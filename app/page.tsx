@@ -3,13 +3,13 @@ import { ContentForm } from '@/components/ContentForm'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">ContentFlow</h1>
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-[#212121] px-6 py-4 flex items-center justify-between shadow-md">
+        <span className="text-[#ffca0c] text-2xl font-bold tracking-tight">ContentFlow</span>
         <ContentForm />
       </header>
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        <h2 className="text-lg font-semibold mb-6">Contenido enviado</h2>
+      <main className="max-w-6xl mx-auto px-6 py-10">
+        <h2 className="text-lg font-semibold text-[#212121] mb-6">Contenido enviado</h2>
         <ContentList />
       </main>
     </div>
