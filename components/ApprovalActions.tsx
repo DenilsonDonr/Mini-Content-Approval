@@ -54,7 +54,7 @@ export function ApprovalActions({ token }: ApprovalActionsProps) {
             <Button
               onClick={handleApprove}
               disabled={loading}
-              className="flex-1 bg-[#212121] hover:bg-[#333] text-[#ffca0c] font-semibold rounded-xl h-12"
+              className="flex-1 bg-[#ffca0c] hover:bg-[#e6b600] text-[#212121] font-semibold rounded-xl h-12"
             >
               ✅ Aprobar
             </Button>

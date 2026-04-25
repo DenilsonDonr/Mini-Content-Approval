@@ -43,15 +43,15 @@ export function ContentForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#ffca0c] hover:bg-[#e6b600] text-[#212121] font-semibold">
+        <Button className="bg-[#212121] hover:bg-[#333] text-white font-semibold">
           Nuevo contenido
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md rounded-2xl p-0 overflow-hidden">
-        <div className="bg-[#212121] px-6 py-5">
+        <div className="bg-[#ffca0c] px-6 py-5">
           <DialogHeader>
-            <DialogTitle className="text-white text-lg font-semibold">Nuevo contenido</DialogTitle>
-            <p className="text-gray-400 text-sm mt-1">Completá los datos para enviar el contenido al cliente.</p>
+            <DialogTitle className="text-[#212121] text-lg font-semibold">Nuevo contenido</DialogTitle>
+            <p className="text-[#212121]/70 text-sm mt-1">Completá los datos para enviar el contenido al cliente.</p>
           </DialogHeader>
         </div>
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-5">
@@ -81,7 +81,7 @@ export function ContentForm() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#ffca0c] hover:bg-[#e6b600] text-[#212121] font-semibold rounded-lg"
+            className="w-full bg-[#212121] hover:bg-[#333] text-white font-semibold rounded-lg"
           >
             {loading ? 'Enviando...' : 'Enviar contenido'}
           </Button>
