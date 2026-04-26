@@ -60,7 +60,7 @@ export function ContentList() {
                 {grouped[col.status].length}
               </span>
             </div>
-            <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1 py-1">
               {grouped[col.status].length === 0 ? (
                 <p className="text-xs text-gray-400 text-center py-6">Sin contenido</p>
               ) : (
