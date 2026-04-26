@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useState } from 'react'
 import type { ContentPiece } from '@/types'
 
 interface ContentCardProps {
@@ -30,9 +31,12 @@ function formatDate(dateStr: string) {
 
 export function ContentCard({ content }: ContentCardProps) {
   const shareableUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/review/${content.token}`
+  const [copied, setCopied] = useState(false)
 
   function copyToClipboard() {
     navigator.clipboard.writeText(shareableUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
@@ -74,7 +78,7 @@ export function ContentCard({ content }: ContentCardProps) {
             onClick={copyToClipboard}
             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs h-8 rounded-md"
           >
-            Copiar enlace
+            {copied ? '¡Copiado!' : 'Copiar enlace'}
           </Button>
         </div>
       </CardContent>
