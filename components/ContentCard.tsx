@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { StatusBadge } from '@/components/StatusBadge'
 import { VideoPlayer } from '@/components/VideoPlayer'
 import {
   Dialog,
@@ -33,12 +32,9 @@ export function ContentCard({ content }: ContentCardProps) {
   return (
     <Card className="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl">
       <CardContent className="p-3 space-y-2">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <p className="font-semibold text-[#212121] text-sm truncate">{content.title}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{date}</p>
-          </div>
-          <StatusBadge status={content.status} />
+        <div>
+          <p className="font-semibold text-[#212121] text-sm truncate">{content.title}</p>
+          <p className="text-xs text-gray-400 mt-0.5">{date}</p>
         </div>
 
         <div className="flex items-center gap-2">
