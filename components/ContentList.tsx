@@ -51,7 +51,7 @@ export function ContentList() {
         placeholder="Buscar por título..."
         className="mb-6 max-w-sm bg-white border-gray-200 focus-visible:ring-[#ffca0c]"
       />
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {columns.map((col) => (
           <div key={col.status}>
             <div className={`${col.headerBg} rounded-xl px-4 py-3 flex items-center justify-between mb-4`}>
