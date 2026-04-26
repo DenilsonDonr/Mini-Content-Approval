@@ -17,7 +17,9 @@ interface ContentCardProps {
 }
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleString('es-ES', {
+  const date = new Date(dateStr.replace(' ', 'T'))
+  if (isNaN(date.getTime())) return dateStr
+  return date.toLocaleString('es-ES', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',

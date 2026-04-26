@@ -19,7 +19,7 @@ export function ApprovalActions({ token }: ApprovalActionsProps) {
     setLoading(true)
     await supabase
       .from('content_pieces')
-      .update({ status: 'approved' })
+      .update({ status: 'approved', updated_at: new Date().toISOString() })
       .eq('token', token)
     setSubmitted(true)
     setLoading(false)
@@ -30,7 +30,7 @@ export function ApprovalActions({ token }: ApprovalActionsProps) {
     setLoading(true)
     await supabase
       .from('content_pieces')
-      .update({ status: 'rejected', feedback })
+      .update({ status: 'rejected', feedback, updated_at: new Date().toISOString() })
       .eq('token', token)
     setSubmitted(true)
     setLoading(false)
