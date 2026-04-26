@@ -1,7 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import { useContentPieces } from '@/hooks/useContentPieces'
 import { ContentCard } from '@/components/ContentCard'
+import { Input } from '@/components/ui/input'
 import type { ContentStatus, ContentPiece } from '@/types'
 
 const columns: { status: ContentStatus; label: string; headerBg: string; count: string }[] = [
@@ -10,8 +12,14 @@ const columns: { status: ContentStatus; label: string; headerBg: string; count: 
   { status: 'rejected', label: 'Rechazado', headerBg: 'bg-red-500/30', count: 'bg-red-500/40 text-red-900' },
 ]
 
+function filterByQuery(items: ContentPiece[], query: string): ContentPiece[] {
+  if (!query) return items
+  return items.filter((c) => c.title.toLowerCase().includes(query.toLowerCase()))
+}
+
 export function ContentList() {
   const { contentPieces, loading, error } = useContentPieces()
+  const [search, setSearch] = useState('')
 
   if (loading) {
     return <p className="text-gray-400 text-sm">Cargando contenido...</p>
@@ -26,17 +34,23 @@ export function ContentList() {
   }
 
   const grouped: Record<ContentStatus, ContentPiece[]> = {
-    pending: contentPieces.filter((c) => c.status === 'pending'),
-    approved: contentPieces.filter((c) => c.status === 'approved'),
-    rejected: contentPieces.filter((c) => c.status === 'rejected'),
+    pending: filterByQuery(contentPieces.filter((c) => c.status === 'pending'), search),
+    approved: filterByQuery(contentPieces.filter((c) => c.status === 'approved'), search),
+    rejected: filterByQuery(contentPieces.filter((c) => c.status === 'rejected'), search),
   }
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-[#212121]">Contenido enviado</h2>
         <span className="text-sm font-medium text-[#212121] bg-[#ffca0c] px-3 py-1 rounded-full">Total: {contentPieces.length}</span>
       </div>
+      <Input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Buscar por título..."
+        className="mb-6 max-w-sm bg-white border-gray-200 focus-visible:ring-[#ffca0c]"
+      />
       <div className="grid grid-cols-3 gap-6">
         {columns.map((col) => (
           <div key={col.status}>
