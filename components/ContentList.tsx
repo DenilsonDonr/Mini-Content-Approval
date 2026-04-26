@@ -31,16 +31,14 @@ export function ContentList() {
     rejected: contentPieces.filter((c) => c.status === 'rejected'),
   }
 
-  const activeColumns = columns.filter((col) => grouped[col.status].length > 0)
-
   return (
     <>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold text-[#212121]">Contenido enviado</h2>
         <span className="text-sm font-medium text-[#212121] bg-[#ffca0c] px-3 py-1 rounded-full">Total: {contentPieces.length}</span>
       </div>
-      <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${activeColumns.length}, minmax(0, 1fr))` }}>
-        {activeColumns.map((col) => (
+      <div className="grid grid-cols-3 gap-6">
+        {columns.map((col) => (
           <div key={col.status}>
             <div className={`${col.headerBg} rounded-xl px-4 py-3 flex items-center justify-between mb-4`}>
               <span className="font-semibold text-[#212121] text-sm">{col.label}</span>
@@ -49,9 +47,13 @@ export function ContentList() {
               </span>
             </div>
             <div className="space-y-3">
-              {grouped[col.status].map((content) => (
-                <ContentCard key={content.id} content={content} />
-              ))}
+              {grouped[col.status].length === 0 ? (
+                <p className="text-xs text-gray-400 text-center py-6">Sin contenido</p>
+              ) : (
+                grouped[col.status].map((content) => (
+                  <ContentCard key={content.id} content={content} />
+                ))
+              )}
             </div>
           </div>
         ))}
