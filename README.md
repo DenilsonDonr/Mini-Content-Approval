@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ContentFlow — Mini Content Approval Engine
+
+A full-stack web application that allows content agencies to submit videos for client review and approval. Clients receive a unique shareable link to watch the video and approve or reject it with feedback. The agency dashboard updates in real time.
+
+---
+
+## Features
+
+- **Agency Dashboard** — submit content with title and video URL, view all submissions grouped by status in a kanban-style layout, search by title, and copy shareable client links
+- **Client Review Page** — clean public page accessible via unique URL, renders YouTube, Vimeo, or MP4 videos automatically
+- **Approve / Reject Flow** — clients can approve or reject content with written feedback; buttons are disabled after submission to prevent duplicates
+- **Real-time Updates** — dashboard status changes instantly via Supabase Realtime WebSockets when a client acts, no page refresh needed
+- **Video Preview** — agencies can preview videos directly from the dashboard without leaving the page
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS + shadcn/ui |
+| Database | Supabase (PostgreSQL) |
+| Realtime | Supabase Realtime (WebSockets) |
+| Deployment | Vercel |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/DenilsonDonr/Mini-Content-Approval.git
+cd Mini-Content-Approval
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env.local` file in the root of the project:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+You can find your Supabase credentials in **Project Settings → API**.
+
+### 4. Set up the database
+
+Run the following SQL in your Supabase SQL Editor:
+
+```sql
+CREATE TABLE content_pieces (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  video_url TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'approved', 'rejected')),
+  feedback TEXT,
+  token TEXT NOT NULL UNIQUE DEFAULT encode(gen_random_bytes(16), 'hex'),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE content_pieces ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all" ON content_pieces FOR ALL USING (true);
+ALTER PUBLICATION supabase_realtime ADD TABLE content_pieces;
+```
+
+### 5. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+/
+├── app/
+│   ├── page.tsx                    # Agency Dashboard
+│   └── review/[token]/page.tsx     # Client Review Page
+├── components/
+│   ├── ui/                         # shadcn/ui base components
+│   ├── ApprovalActions.tsx         # Approve/Reject flow
+│   ├── ContentCard.tsx             # Single content card
+│   ├── ContentForm.tsx             # New content submission form
+│   ├── ContentList.tsx             # Kanban columns with search
+│   ├── StatusBadge.tsx             # Status color badge
+│   └── VideoPlayer.tsx             # Smart video player
+├── hooks/
+│   └── useContentPieces.ts         # Realtime data fetching hook
+├── lib/
+│   └── supabase/client.ts          # Supabase client
+└── types/
+    └── index.ts                    # TypeScript interfaces
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## AI Tools Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built using **Claude Code** as the primary AI coding assistant for architecture decisions, component implementation, Supabase integration, and real-time subscription setup. The UI was designed iteratively using Tailwind CSS with shadcn/ui components, guided through conversation with the AI agent.
